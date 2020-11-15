@@ -28,9 +28,9 @@ def get_activities(access_token):
     Only scraping 'moving_time' and 'distance' from each activity
     """
 
-    # access_token = get_access_token()
     URL = 'https://www.strava.com/api/v3/athlete/activities'
     headers = {'Authorization': 'Bearer ' + access_token}
+    # currently only retrieves activities from beginning of 2020
     params = {'before': int(time()), 'after': 1577836800, 'per_page': 30, 'page': 1}
     activities = []
     while True:
@@ -107,7 +107,7 @@ def display_stats(activity_data):
     print('--------------------------')
     print('Outdoor rides YTD:')
     print(f'Rides: {count_outdoor}')
-    print(f'Miles (virtual): {meters_to_miles(distance_outdoor)}')
+    print(f'Miles (actual): {meters_to_miles(distance_outdoor)}')
     print(f'Time: {time_parser(time_outdoor)}')
     print('--------------------------')
     print('Cumulative YTD:')
