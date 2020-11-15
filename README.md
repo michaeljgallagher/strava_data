@@ -12,18 +12,16 @@ Now you can separate the year-to-date totals for these activity types!
 
 ### Afterwards:
 
+- Clone this repository & install dependencies:
 ```bash
-# Clone this repository
 git clone https://github.com/michaeljgallagher/strava_data && cd strava_data
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-Update `settings.py` with your `CLIENT_ID`, `CLIENT_SECRET`, and `REFRESH_TOKEN` (obtained from authorization)
+- Update `settings.py` with your `CLIENT_ID`, `CLIENT_SECRET`, and `REFRESH_TOKEN` (obtained from authorization)
 
+- Run `strava_data.py`:
 ```bash
-# run strava_data.py
 python strava_data.py
 ```
 
