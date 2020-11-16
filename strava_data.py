@@ -83,7 +83,7 @@ def meters_to_miles(distance):
 
 def meters_to_kms(distance):
     """
-    Convert meters to kilometers (3 decimal places) and return as str
+    Convert meters to kilometers (2 decimal places)
     """
     return round(distance * 0.001, 2)
 
