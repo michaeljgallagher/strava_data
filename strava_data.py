@@ -134,7 +134,7 @@ def display_stats(activity_data, metric=False):
 def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
-    parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rathan than miles')
+    parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rather than miles')
     args = parser.parse_args()
 
     # Retrieve user access token

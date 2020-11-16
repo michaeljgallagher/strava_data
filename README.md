@@ -43,7 +43,7 @@ Separate and aggregate Rides and Virtual Rides from Strava
 
 optional arguments:
   -h, --help    show this help message and exit
-  -m, --metric  Display distance in kilometers rathan than miles
+  -m, --metric  Display distance in kilometers rather than miles
 ```
 
 ## TODO
