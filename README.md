@@ -5,24 +5,45 @@ Now you can separate the year-to-date totals for these activity types!
 
 ## Installation and usage
 
-### Prerequisite:
+### Prerequisite
 
- - Create a [Strava App](https://www.strava.com/settings/api)
- - [Authorize](https://developers.strava.com/docs/authentication/#tokenexchange) a Strava user to obtain a `refresh_token`
+- Create a [Strava App](https://www.strava.com/settings/api)
+- [Authorize](https://developers.strava.com/docs/authentication/#tokenexchange) a Strava user to obtain a `refresh_token`
 
-### Afterwards:
+### Afterwards
 
 - Clone this repository & install dependencies:
+
 ```bash
 git clone https://github.com/michaeljgallagher/strava_data && cd strava_data
 pip install -r requirements.txt
 ```
 
 - Update `settings.py` with your `CLIENT_ID`, `CLIENT_SECRET`, and `REFRESH_TOKEN` (obtained from authorization)
-
 - Run `strava_data.py`:
+
 ```bash
 python strava_data.py
+```
+
+The distance can be displayed in kilometers rather than miles by adding `-m` or `--metric` as an argument:
+
+```bash
+python strava_data.py -m
+# or
+python strava_data.py --metric
+```
+
+## Optional arguments
+
+```bash
+usage: strava_data.py [-h] [-m]
+
+Separate and aggregate Rides and Virtual Rides from Strava
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -m, --metric  Display distance in kilometers rathan than miles
 ```
 
 ## TODO

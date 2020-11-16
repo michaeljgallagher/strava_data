@@ -1,3 +1,4 @@
+import argparse
 import requests
 from time import time
 from settings import CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN
@@ -80,6 +81,13 @@ def meters_to_miles(distance):
     return round(distance * 0.00062137119, 2)
 
 
+def meters_to_kms(distance):
+    """
+    Convert meters to kilometers (3 decimal places) and return as str
+    """
+    return round(distance * 0.001, 2)
+
+
 def time_parser(seconds):
     """
     Input: int, time in seconds
@@ -91,33 +99,44 @@ def time_parser(seconds):
     return f'{hours}h {minutes}m {seconds}s'
 
 
-def display_stats(activity_data):
+def display_stats(activity_data, metric=False):
     """
     Prints the aggregated data
     """
-
+    units = 'kilometers' if metric else 'miles'
     count_indoor, time_indoor, distance_indoor = activity_data['VirtualRide'].values()
     count_outdoor, time_outdoor, distance_outdoor = activity_data['Ride'].values()
+    if metric:
+        distance_indoor = meters_to_kms(distance_indoor)
+        distance_outdoor = meters_to_kms(distance_outdoor)
+    else:
+        distance_indoor = meters_to_miles(distance_indoor)
+        distance_outdoor = meters_to_miles(distance_outdoor)
 
     print()
     print('Indoor rides YTD:')
     print(f'Rides: {count_indoor}')
-    print(f'Miles (virtual): {meters_to_miles(distance_indoor)}')
+    print(f'Distance (virtual): {distance_indoor} {units}')
     print(f'Time: {time_parser(time_indoor)}')
     print('--------------------------')
     print('Outdoor rides YTD:')
     print(f'Rides: {count_outdoor}')
-    print(f'Miles (actual): {meters_to_miles(distance_outdoor)}')
+    print(f'Distance (actual): {distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor)}')
     print('--------------------------')
     print('Cumulative YTD:')
     print(f'Rides: {count_indoor+count_outdoor}')
-    print(f'Miles (virtual & actual): {meters_to_miles(distance_indoor+distance_outdoor)}')
+    print(f'Distance (virtual & actual): {distance_indoor+distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor+time_indoor)}')
     print()
 
 
 def main():
+    # Parse arguments
+    parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
+    parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rathan than miles')
+    args = parser.parse_args()
+
     # Retrieve user access token
     access_token = get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
 
@@ -127,8 +146,8 @@ def main():
     # Aggregate activity data
     activity_data = aggregate_data(activities)
 
-    # Display aggregated ata
-    display_stats(activity_data)
+    # Display aggregated data
+    display_stats(activity_data, metric=args.metric)
 
 
 if __name__ == '__main__':
