@@ -23,7 +23,7 @@ def get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN):
         raise RuntimeError(res.text)
 
 
-def get_activities(access_token):
+def get_activities(access_token, start_date=1577836800, end_date=int(time())):
     """
     Return all 'Ride' and 'VirtualRide' activities.
     Only scraping 'moving_time' and 'distance' from each activity
@@ -31,8 +31,8 @@ def get_activities(access_token):
 
     URL = 'https://www.strava.com/api/v3/athlete/activities'
     headers = {'Authorization': 'Bearer ' + access_token}
-    # currently only retrieves activities from beginning of 2020
-    params = {'before': int(time()), 'after': 1577836800, 'per_page': 30, 'page': 1}
+    # currently defaults to activities from beginning of 2020
+    params = {'before': end_date, 'after': start_date, 'per_page': 30, 'page': 1}
     activities = []
     while True:
         res = requests.get(URL, headers=headers, params=params)
@@ -135,13 +135,15 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
     parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rather than miles')
+    parser.add_argument('-s', '--start', action='store', default=1577836800, type=int, help='Specify start date (epoch time)')
+    parser.add_argument('-e', '--end', action='store', default=int(time()), type=int, help='Specify end date (epoch time)')
     args = parser.parse_args()
 
     # Retrieve user access token
     access_token = get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
 
     # Retrieve user activities
-    activities = get_activities(access_token)
+    activities = get_activities(access_token, args.start, args.end)
 
     # Aggregate activity data
     activity_data = aggregate_data(activities)
