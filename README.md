@@ -37,16 +37,20 @@ python strava_data.py --metric
 ## Optional arguments
 
 ```bash
-usage: strava_data.py [-h] [-m]
+usage: strava_data.py [-h] [-m] [-s START] [-e END]
 
 Separate and aggregate Rides and Virtual Rides from Strava
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -m, --metric  Display distance in kilometers rather than miles
+  -h, --help            show this help message and exit
+  -m, --metric          Display distance in kilometers rather than miles
+  -s START, --start START
+                        Specify start date (epoch time)
+  -e END, --end END     Specify end date (epoch time)
 ```
 
 ## TODO
 
-- Add command line arguments to specify a range of dates
+- Add ability to read -s and -e args as strings and convert to epoch
+- Make output cleaner
 - Add option to export data
