@@ -104,6 +104,8 @@ def display_stats(activity_data, metric=False, start_date=1577836800, end_date=i
     Prints the aggregated data
     """
     units = 'kilometers' if metric else 'miles'
+    begin = time.strftime("%Y-%m-%d", time.gmtime(start_date))
+    end = time.strftime("%Y-%m-%d", time.gmtime(end_date))
     count_indoor, time_indoor, distance_indoor = activity_data['VirtualRide'].values()
     count_outdoor, time_outdoor, distance_outdoor = activity_data['Ride'].values()
     if metric:
@@ -114,22 +116,19 @@ def display_stats(activity_data, metric=False, start_date=1577836800, end_date=i
         distance_outdoor = meters_to_miles(distance_outdoor)
 
     print('\n\n')
-    print(f'Strava activities from {time.strftime("%Y-%m-%d", time.gmtime(start_date))} to {time.strftime("%Y-%m-%d", time.gmtime(end_date))}')
+    print(f'Activities from \033[1m{begin}\033[0m to \033[1m{end}\033[0m')
     print()
-    print('Indoor rides')
-    print('------------------------------------')
+    print('\033[1mIndoor stats\033[0m')
     print(f'Rides: {count_indoor}')
     print(f'Distance (virtual): {distance_indoor} {units}')
     print(f'Time: {time_parser(time_indoor)}')
     print()
-    print('Outdoor rides')
-    print('------------------------------------')
+    print('\033[1mOutdoor stats\033[0m')
     print(f'Rides: {count_outdoor}')
     print(f'Distance (actual): {distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor)}')
     print()
-    print('Cumulative')
-    print('------------------------------------')
+    print('\033[1mCumulative stats\033[0m')
     print(f'Rides: {count_indoor+count_outdoor}')
     print(f'Distance (virtual & actual): {distance_indoor+distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor+time_indoor)}')
