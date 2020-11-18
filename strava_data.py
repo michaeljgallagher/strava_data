@@ -1,6 +1,6 @@
 import argparse
 import requests
-from time import time
+import time
 from settings import CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN
 
 
@@ -23,7 +23,7 @@ def get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN):
         raise RuntimeError(res.text)
 
 
-def get_activities(access_token, start_date=1577836800, end_date=int(time())):
+def get_activities(access_token, start_date=1577836800, end_date=int(time.time())):
     """
     Return all 'Ride' and 'VirtualRide' activities.
     Only scraping 'moving_time' and 'distance' from each activity
@@ -99,7 +99,7 @@ def time_parser(seconds):
     return f'{hours}h {minutes}m {seconds}s'
 
 
-def display_stats(activity_data, metric=False):
+def display_stats(activity_data, metric=False, start_date=1577836800, end_date=int(time.time())):
     """
     Prints the aggregated data
     """
@@ -113,18 +113,23 @@ def display_stats(activity_data, metric=False):
         distance_indoor = meters_to_miles(distance_indoor)
         distance_outdoor = meters_to_miles(distance_outdoor)
 
+    print('\n\n')
+    print(f'Strava activities from {time.strftime("%Y-%m-%d", time.gmtime(start_date))} to {time.strftime("%Y-%m-%d", time.gmtime(end_date))}')
     print()
-    print('Indoor rides YTD:')
+    print('Indoor rides')
+    print('------------------------------------')
     print(f'Rides: {count_indoor}')
     print(f'Distance (virtual): {distance_indoor} {units}')
     print(f'Time: {time_parser(time_indoor)}')
-    print('--------------------------')
-    print('Outdoor rides YTD:')
+    print()
+    print('Outdoor rides')
+    print('------------------------------------')
     print(f'Rides: {count_outdoor}')
     print(f'Distance (actual): {distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor)}')
-    print('--------------------------')
-    print('Cumulative YTD:')
+    print()
+    print('Cumulative')
+    print('------------------------------------')
     print(f'Rides: {count_indoor+count_outdoor}')
     print(f'Distance (virtual & actual): {distance_indoor+distance_outdoor} {units}')
     print(f'Time: {time_parser(time_outdoor+time_indoor)}')
@@ -136,20 +141,21 @@ def main():
     parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
     parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rather than miles')
     parser.add_argument('-s', '--start', action='store', default=1577836800, type=int, help='Specify start date (epoch time)')
-    parser.add_argument('-e', '--end', action='store', default=int(time()), type=int, help='Specify end date (epoch time)')
+    parser.add_argument('-e', '--end', action='store', default=int(time.time()), type=int, help='Specify end date (epoch time)')
     args = parser.parse_args()
 
     # Retrieve user access token
     access_token = get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
 
     # Retrieve user activities
+    print('Fetching ride data...')
     activities = get_activities(access_token, args.start, args.end)
 
     # Aggregate activity data
     activity_data = aggregate_data(activities)
 
     # Display aggregated data
-    display_stats(activity_data, metric=args.metric)
+    display_stats(activity_data, metric=args.metric, start_date=args.start, end_date=args.end)
 
 
 if __name__ == '__main__':
