@@ -104,8 +104,7 @@ def display_stats(activity_data, metric=False, start_date=1577836800, end_date=i
     Prints the aggregated data
     """
     units = 'kilometers' if metric else 'miles'
-    begin = time.strftime("%Y-%m-%d", time.gmtime(start_date))
-    end = time.strftime("%Y-%m-%d", time.gmtime(end_date))
+
     count_indoor, time_indoor, distance_indoor = activity_data['VirtualRide'].values()
     count_outdoor, time_outdoor, distance_outdoor = activity_data['Ride'].values()
     if metric:
@@ -114,6 +113,9 @@ def display_stats(activity_data, metric=False, start_date=1577836800, end_date=i
     else:
         distance_indoor = meters_to_miles(distance_indoor)
         distance_outdoor = meters_to_miles(distance_outdoor)
+    
+    begin = time.strftime("%Y-%m-%d", time.gmtime(start_date))
+    end = time.strftime("%Y-%m-%d", time.gmtime(end_date))
 
     print('\n\n')
     print(f'Activities from \033[1m{begin}\033[0m to \033[1m{end}\033[0m')
