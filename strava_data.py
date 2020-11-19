@@ -1,6 +1,6 @@
 import argparse
 import requests
-import time
+from datetime import datetime
 from settings import CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN
 
 
@@ -23,7 +23,7 @@ def get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN):
         raise RuntimeError(res.text)
 
 
-def get_activities(access_token, start_date=1577836800, end_date=int(time.time())):
+def get_activities(access_token, start_date=datetime(2020, 1, 1), end_date=datetime.today()):
     """
     Return all 'Ride' and 'VirtualRide' activities.
     Only scraping 'moving_time' and 'distance' from each activity
@@ -32,7 +32,7 @@ def get_activities(access_token, start_date=1577836800, end_date=int(time.time()
     URL = 'https://www.strava.com/api/v3/athlete/activities'
     headers = {'Authorization': 'Bearer ' + access_token}
     # currently defaults to activities from beginning of 2020
-    params = {'before': end_date, 'after': start_date, 'per_page': 30, 'page': 1}
+    params = {'before': int(end_date.timestamp()), 'after': int(start_date.timestamp()), 'per_page': 30, 'page': 1}
     activities = []
     while True:
         res = requests.get(URL, headers=headers, params=params)
@@ -99,7 +99,7 @@ def time_parser(seconds):
     return f'{hours}h {minutes}m {seconds}s'
 
 
-def display_stats(activity_data, metric=False, start_date=1577836800, end_date=int(time.time())):
+def display_stats(activity_data, metric=False, start_date=datetime(2020, 1, 1), end_date=datetime.today()):
     """
     Prints the aggregated data
     """
@@ -114,8 +114,8 @@ def display_stats(activity_data, metric=False, start_date=1577836800, end_date=i
         distance_indoor = meters_to_miles(distance_indoor)
         distance_outdoor = meters_to_miles(distance_outdoor)
     
-    begin = time.strftime("%Y-%m-%d", time.gmtime(start_date))
-    end = time.strftime("%Y-%m-%d", time.gmtime(end_date))
+    begin = start_date.isoformat()[:10]
+    end = end_date.isoformat()[:10]
 
     print('\n\n')
     print(f'Activities from \033[1m{begin}\033[0m to \033[1m{end}\033[0m')
@@ -141,8 +141,8 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
     parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rather than miles')
-    parser.add_argument('-s', '--start', action='store', default=1577836800, type=int, help='Specify start date (epoch time)')
-    parser.add_argument('-e', '--end', action='store', default=int(time.time()), type=int, help='Specify end date (epoch time)')
+    parser.add_argument('-s', '--start', action='store', default=datetime(2020, 1, 1), type=datetime.fromisoformat, help='Specify start date (YYYY-MM-DD)')
+    parser.add_argument('-e', '--end', action='store', default=datetime.today(), type=datetime.fromisoformat, help='Specify end date (YYYY-MM-DD)')
     args = parser.parse_args()
 
     # Retrieve user access token
