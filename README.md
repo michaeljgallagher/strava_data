@@ -34,6 +34,15 @@ python strava_data.py -m
 python strava_data.py --metric
 ```
 
+The date range can be specified with `-s` and `-e`, formatted as `YYYY-MM-DD`:
+
+```bash
+# for 2019 activities
+python strava_data.py -s 2019-01-01 -e 2019-31-12
+# for activities since March 15, 2020
+python strava_data.py --start 2020-03-15
+```
+
 ## Optional arguments
 
 ```bash
@@ -45,8 +54,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -m, --metric          Display distance in kilometers rather than miles
   -s START, --start START
-                        Specify start date (epoch time)
-  -e END, --end END     Specify end date (epoch time)
+                        Specify start date (YYYY-MM-DD)
+  -e END, --end END     Specify end date (YYYY-MM-DD)
 ```
 
 ## TODO
