@@ -132,7 +132,7 @@ def display_stats(activity_data, metric=False, start_date=datetime(2020, 1, 1), 
     print()
     print('\033[1mCumulative stats\033[0m')
     print(f'Rides: {count_indoor+count_outdoor}')
-    print(f'Distance (virtual & actual): {distance_indoor+distance_outdoor} {units}')
+    print(f'Distance (virtual & actual): {round(distance_indoor+distance_outdoor ,2)} {units}')
     print(f'Time: {time_parser(time_outdoor+time_indoor)}')
     print()
 
