@@ -43,6 +43,10 @@ python strava_data.py -s 2019-01-01 -e 2019-31-12
 python strava_data.py --start 2020-03-15
 ```
 
+## Sample output
+
+![sample](https://github.com/michaeljgallagher/strava_data/blob/main/sample_output.png?raw=true)
+
 ## Optional arguments
 
 ```bash
