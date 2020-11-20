@@ -45,7 +45,7 @@ python strava_data.py --start 2020-03-15
 
 ## Sample output
 
-![sample](https://github.com/michaeljgallagher/strava_data/blob/main/sample_output.png?raw=true)
+![sample](https://github.com/michaeljgallagher/strava_data/blob/main/sample_output.png?raw=true?size=400x)
 
 ## Optional arguments
 
