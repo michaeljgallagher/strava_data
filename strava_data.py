@@ -103,16 +103,17 @@ def display_stats(activity_data, metric=False, start_date=datetime(2020, 1, 1), 
     """
     Prints the aggregated data
     """
-    units = 'kilometers' if metric else 'miles'
-
     count_indoor, time_indoor, distance_indoor = activity_data['VirtualRide'].values()
     count_outdoor, time_outdoor, distance_outdoor = activity_data['Ride'].values()
+    
     if metric:
         distance_indoor = meters_to_kms(distance_indoor)
         distance_outdoor = meters_to_kms(distance_outdoor)
+        units = 'kilometers'
     else:
         distance_indoor = meters_to_miles(distance_indoor)
         distance_outdoor = meters_to_miles(distance_outdoor)
+        units = 'miles'
     
     begin = start_date.isoformat()[:10]
     end = end_date.isoformat()[:10]
