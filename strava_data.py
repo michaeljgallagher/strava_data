@@ -23,7 +23,7 @@ def get_access_token(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN):
         raise RuntimeError(res.text)
 
 
-def get_activities(access_token, start_date=datetime(2020, 1, 1), end_date=datetime.today()):
+def get_activities(access_token, start_date=datetime(2021, 1, 1), end_date=datetime.today()):
     """
     Return all 'Ride' and 'VirtualRide' activities.
     Only scraping 'moving_time' and 'distance' from each activity
@@ -99,7 +99,7 @@ def time_parser(seconds):
     return f'{hours}h {minutes}m {seconds}s'
 
 
-def display_stats(activity_data, metric=False, start_date=datetime(2020, 1, 1), end_date=datetime.today()):
+def display_stats(activity_data, metric=False, start_date=datetime(2021, 1, 1), end_date=datetime.today()):
     """
     Prints the aggregated data
     """
@@ -142,7 +142,7 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Separate and aggregate Rides and Virtual Rides from Strava')
     parser.add_argument('-m', '--metric', action='store_true', help='Display distance in kilometers rather than miles')
-    parser.add_argument('-s', '--start', action='store', default=datetime(2020, 1, 1), type=datetime.fromisoformat, help='Specify start date (YYYY-MM-DD)')
+    parser.add_argument('-s', '--start', action='store', default=datetime(2021, 1, 1), type=datetime.fromisoformat, help='Specify start date (YYYY-MM-DD)')
     parser.add_argument('-e', '--end', action='store', default=datetime.today(), type=datetime.fromisoformat, help='Specify end date (YYYY-MM-DD)')
     args = parser.parse_args()
 
